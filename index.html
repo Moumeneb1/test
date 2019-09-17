@@ -14,6 +14,7 @@ body { margin:0; padding:0; }
 <body>
  
 <div id='map'></div>
+ <pre id='coordinates' class='coordinates'></pre>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoibW91bWVuZWIxIiwiYSI6ImNqeXJiNzltMTA4bGkzY251aGwzMTlhcWsifQ.u-VGRZVtwq1OBAl0K2Kfkg';
 var map = new mapboxgl.Map({
@@ -66,7 +67,7 @@ map.addLayer({
 }
 }, labelLayerId);
 });
- 
+ var coordinates = document.getElementById('coordinates');
  var marker = new mapboxgl.Marker({
 draggable: true
 })
