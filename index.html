@@ -67,7 +67,31 @@ map.on('load', function() {
         }
     }
   
- 
+    map.loadImage('https://img.icons8.com/color/48/000000/water-element.png', function(error, image) {
+if (error) throw error;
+map.addImage('cat', image);
+map.addLayer({
+"id": "points",
+"type": "symbol",
+"source": {
+"type": "geojson",
+"data": {
+"type": "FeatureCollection",
+"features": [{
+"type": "Feature",
+"geometry": {
+"type": "Point",
+"coordinates": [0, 0]
+}
+}]
+}
+},
+"layout": {
+"icon-image": "cat",
+"icon-size": 0.25
+}
+});
+});
  
     map.addLayer({
         'id': '3d-buildings',
