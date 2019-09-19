@@ -188,16 +188,51 @@ map.addLayer({
     }, labelLayerId);
 });
     
-    map.addLayer({
-	'id': 'area of interest',
-	'type': 'inverted-fill',
-	'source': 'aoi',
-	'layout': {},
-	'paint': {
-		'fill-pattern': 'hatch',
-		'fill-opacity': 1
-	}
-});
+ /*************************************/
+	 map.addSource('mask', {
+    "type": "geojson",
+    "data": polyMask(mask, bounds)
+  });
+
+  map.addLayer({
+    "id": "zmask",
+    "source": "mask",
+    "type": "fill",
+    "paint": {
+      "fill-color": "white",
+      'fill-opacity': 0.999
+    }
+  });
+	
+	function polyMask(mask, bounds) {
+  var bboxPoly = turf.bboxPolygon(bounds);
+  return turf.difference(bboxPoly, mask);
+}
+
+var mask = turf.polygon([
+  [
+    [-122.43764877319336,
+      37.78645343442073
+    ],
+    [-122.40056991577148,
+      37.78930232286027
+    ],
+    [-122.39172935485838,
+      37.76630458915842
+    ],
+    [-122.43550300598145,
+      37.75646561597495
+    ],
+    [-122.45378494262697,
+      37.7781096293495
+    ],
+    [-122.43764877319336,
+      37.78645343442073
+    ]
+  ]
+]);
+	
+	/******************************/
 </script>
 
 </body>
