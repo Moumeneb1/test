@@ -91,22 +91,20 @@ map.on('load', function() {
             break;
         }
     }
-    
-    map.addSource("places", {
+    map.addLayer({
+"id": "LineString",
+"type": "line",
+"source": {
 "type": "geojson",
-"data": places
-});
- 
-map.addLayer({
-"id": "poi-labels",
-"type": "symbol",
-"source": "places",
+"data": geojson
+},
 "layout": {
-"text-field": ["get", "description"],
-"text-variable-anchor": ["top", "bottom", "left", "right"],
-"text-radial-offset": 0.5,
-"text-justify": "auto",
-"icon-image": ["concat", ["get", "icon"], "-15"]
+"line-join": "round",
+"line-cap": "round"
+},
+"paint": {
+"line-color": "#BF93E4",
+"line-width": 5
 }
 });
     
