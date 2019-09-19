@@ -15,7 +15,10 @@
 <body>
 
 <div id='map'></div>
+	
+<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 <script>
+
 mapboxgl.accessToken = 'pk.eyJ1IjoibW91bWVuZWIxIiwiYSI6ImNqeXJiNzltMTA4bGkzY251aGwzMTlhcWsifQ.u-VGRZVtwq1OBAl0K2Kfkg';
 var map = new mapboxgl.Map({
     style: 'mapbox://styles/moumeneb1/ck0p00cm30oj91cpi7w73dia6',
@@ -236,6 +239,5 @@ var mask = turf.polygon([
 	
 	/******************************/
 </script>
-<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 </body>
 </html>
