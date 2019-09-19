@@ -194,20 +194,6 @@ map.addLayer({
     
  /*************************************/
 	var bounds = [-122.5336, 37.7049, -122.3122, 37.8398];
-	 map.addSource('mask', {
-    "type": "geojson",
-    "data": polyMask(mask, bounds)
-  });
-
-  map.addLayer({
-    "id": "zmask",
-    "source": "mask",
-    "type": "fill",
-    "paint": {
-      "fill-color": "white",
-      'fill-opacity': 0.999
-    }
-  });
 	
 	function polyMask(mask, bounds) {
   var bboxPoly = turf.bboxPolygon(bounds);
@@ -236,6 +222,21 @@ var mask = turf.polygon([
     ]
   ]
 ]);
+	
+	 map.addSource('mask', {
+    "type": "geojson",
+    "data": polyMask(mask, bounds)
+  });
+
+  map.addLayer({
+    "id": "zmask",
+    "source": "mask",
+    "type": "fill",
+    "paint": {
+      "fill-color": "white",
+      'fill-opacity': 0.999
+    }
+  });
 	
 	/******************************/
 </script>
