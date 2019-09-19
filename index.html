@@ -187,6 +187,17 @@ map.addLayer({
         }
     }, labelLayerId);
 });
+    
+    map.addLayer({
+	'id': 'area of interest',
+	'type': 'inverted-fill',
+	'source': 'aoi',
+	'layout': {},
+	'paint': {
+		'fill-pattern': 'hatch',
+		'fill-opacity': 1
+	}
+});
 </script>
 
 </body>
