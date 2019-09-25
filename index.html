@@ -21,7 +21,7 @@
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibW91bWVuZWIxIiwiYSI6ImNqeXJiNzltMTA4bGkzY251aGwzMTlhcWsifQ.u-VGRZVtwq1OBAl0K2Kfkg';
 var map = new mapboxgl.Map({
-    style: 'mapbox://styles/moumeneb1/ck0uyf47d07np1cpr85ixbqq7',
+    style: 'mapbox://styles/moumeneb1/ck0u42q9b17ou1cmophg718yv',
     center: [39.826209, 21.422544],
     zoom: 15.5,
     pitch: 45,
@@ -112,7 +112,7 @@ map.on('load', function() {
 }
 });
     
-    map.loadImage('https://img.icons8.com/color/240/000000/koran.png', function(error, image) {
+    map.loadImage('https://firebasestorage.googleapis.com/v0/b/sirbmvp-249122.appspot.com/o/saleh.png?alt=media&token=4e614aac-d42d-46a1-a498-3e9c746d075f', function(error, image) {
 if (error) throw error;
 map.addImage('cat', image);
 map.addLayer({
