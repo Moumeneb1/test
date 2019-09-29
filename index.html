@@ -1,244 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8' />
-    <title>Display buildings in 3D</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
-    
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
-    <style>
-        body { margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; width:100%; }
-    </style>
+<meta charset='utf-8' />
+<title>Attach a popup to a marker instance</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css' rel='stylesheet' />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<style>
+body { margin:0; padding:0; }
+#map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
 </head>
 <body>
+ 
+<style>
+ 
+#marker {
+background-image: url('https://firebasestorage.googleapis.com/v0/b/sirbmvp-249122.appspot.com/o/meetingPoint.png?alt=media&token=e7d016e6-690e-41e1-9846-6aabb65565d3');
+background-size: cover;
+width: 3%;
+height: 6%;
+border-radius: 0%;
+cursor: pointer;
+}
+ 
+#marker2 {
+background-image: url('https://firebasestorage.googleapis.com/v0/b/sirbmvp-249122.appspot.com/o/saleh.png?alt=media&token=4e614aac-d42d-46a1-a498-3e9c746d075f');
+background-size: cover;
+width: 50px;
+height: 50px;
+border-radius: 50%;
+cursor: pointer;
+}
 
+.mapboxgl-popup {
+max-width: 200px;
+}
+ 
+</style>
+ 
 <div id='map'></div>
-	
-<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+ 
 <script>
-
 mapboxgl.accessToken = 'pk.eyJ1IjoibW91bWVuZWIxIiwiYSI6ImNqeXJiNzltMTA4bGkzY251aGwzMTlhcWsifQ.u-VGRZVtwq1OBAl0K2Kfkg';
+ 
+var monument = [39.8841969,21.4188156];
+var monument2 = [39.106,21.629];
+
 var map = new mapboxgl.Map({
-    style: 'mapbox://styles/moumeneb1/ck0u42q9b17ou1cmophg718yv',
-    center: [39.826209, 21.422544],
-    zoom: 15.5,
-    pitch: 45,
-    bearing: -17.6,
-    container: 'map',
-    antialias: true
+container: 'map',
+style: 'mapbox://styles/moumeneb1/ck0u42q9b17ou1cmophg718yv',
+center: monument,
+pitch: 45,
+bearing: -17.6,
+zoom: 15
 });
+ 
+// create the popup
+var popup = new mapboxgl.Popup({ offset: 25 })
+.setHTML('<div class="list-group"><a href="#" class="list-group-item list-group-item-action active">8:00 Move to BUS </a></div>').addTo(map);
+ 
+var el = document.createElement('div');
+el.id = 'marker2';
 
-    var geojson = {
-"type": "FeatureCollection",
-"features": [{
-"type": "Feature",
-"geometry": {
-"type": "LineString",
-"properties": {},
-"coordinates": [
-[39.901685, 21.413402],
-[39.901685, 21.413402],
-[-77.03364372253417, 38.89549195896866],
-[-77.02982425689697, 38.89549195896866],
-[-77.02400922775269, 38.89387200688839],
-[-77.01519012451172, 38.891416957534204],
-[-77.01521158218382, 38.892068305429156],
-[-77.00813055038452, 38.892051604275686],
-[-77.00832366943358, 38.89143365883688],
-[-77.00818419456482, 38.89082405874451],
-[-77.00815200805664, 38.88989712255097]
-]
-}
-}]
-};
-    
-    
+// create DOM element for the marker
+var el = document.createElement('div');
+el.id = 'marker';
+
+
+
  
- map.on('click', 'places', function (e) {
-var coordinates = e.features[0].geometry.coordinates.slice();
-var description = e.features[0].properties.description;
- 
-// Ensure that if the map is zoomed out such that multiple
-// copies of the feature are visible, the popup appears
-// over the copy being pointed to.
-while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-}
- 
-new mapboxgl.Popup()
-.setLngLat(coordinates)
-.setHTML(description)
+// create the marker
+new mapboxgl.Marker(el)
+.setLngLat(monument)
+.setPopup(popup) // sets a popup on this marker
 .addTo(map);
-});
- // Change the cursor to a pointer when the mouse is over the places layer.
-map.on('mouseenter', 'places', function () {
-map.getCanvas().style.cursor = 'pointer';
-});
+
+new mapboxgl.Marker(el)
+.setLngLat(monument2)
+
+
  
-// Change it back to a pointer when it leaves.
-map.on('mouseleave', 'places', function () {
-map.getCanvas().style.cursor = '';
-});
- 
-// The 'building' layer in the mapbox-streets vector source contains building-height
-// data from OpenStreetMap.
-map.on('load', function() {
-    // Insert the layer beneath any symbol layer.
-    var layers = map.getStyle().layers;
-
-    var labelLayerId;
-    for (var i = 0; i < layers.length; i++) {
-        if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-            labelLayerId = layers[i].id;
-            break;
-        }
-    }
-    map.addLayer({
-"id": "LineString",
-"type": "line",
-"source": {
-"type": "geojson",
-"data": geojson
-},
-"layout": {
-"line-join": "round",
-"line-cap": "round"
-},
-"paint": {
-"line-color": "#BF93E4",
-"line-width": 5
-}
-});
-    
-    map.loadImage('https://firebasestorage.googleapis.com/v0/b/sirbmvp-249122.appspot.com/o/saleh.png?alt=media&token=4e614aac-d42d-46a1-a498-3e9c746d075f', function(error, image) {
-if (error) throw error;
-map.addImage('cat', image);
-map.addLayer({
-"id": "points",
-"type": "symbol",
-"source": {
-"type": "geojson",
-"data": {
-"type": "FeatureCollection",
-"features": [{
-"type": "Feature",
-"geometry": {
-"type": "Point",
-"coordinates": [39.82601,21.42280]
-}
-}]
-}
-},
-"layout": {
-"icon-image": "cat",
-"icon-size": 0.25
-}
-});
-});
- //dsdqdqssdq//
-    map.loadImage('https://firebasestorage.googleapis.com/v0/b/sirbmvp-249122.appspot.com/o/saleh.png?alt=media&token=4e614aac-d42d-46a1-a498-3e9c746d075f', function(error, image) {
-if (error) throw error;
-map.addImage('coran', image);
-map.addLayer({
-"id": "points",
-"type": "symbol",
-"source": {
-"type": "geojson",
-"data": {
-"type": "FeatureCollection",
-"features": [{
-"type": "Feature",
-"geometry": {
-"type": "Point",
-"coordinates": [39.82602,21.42290]
-}
-}]
-}
-},
-"layout": {
-"icon-image": "coran",
-"icon-size": 0.25
-}
-});
-});
-    
-    
-    map.addLayer({
-        'id': '3d-buildings',
-        'source': 'composite',
-        'source-layer': 'building',
-        'filter': ['==', 'extrude', 'true'],
-        'type': 'fill-extrusion',
-        'minzoom': 15,
-        'paint': {
-            'fill-extrusion-color': '#aaa',
-
-            // use an 'interpolate' expression to add a smooth transition effect to the
-            // buildings as the user zooms in
-            'fill-extrusion-height': [
-                "interpolate", ["linear"], ["zoom"],
-                15, 0,
-                15.05, ["get", "height"]
-            ],
-            'fill-extrusion-base': [
-                "interpolate", ["linear"], ["zoom"],
-                15, 0,
-                15.05, ["get", "min_height"]
-            ],
-            'fill-extrusion-opacity': 0
-        }
-    }, labelLayerId);
-});
-    
- /*************************************/
-	var bounds = [-122.5336, 37.7049, -122.3122, 37.8398];
-	
-	function polyMask(mask, bounds) {
-  var bboxPoly = turf.bboxPolygon(bounds);
-  return turf.difference(bboxPoly, mask);
-}
-
-var mask = turf.polygon([
-  [
-    [-122.43764877319336,
-      37.78645343442073
-    ],
-    [-122.40056991577148,
-      37.78930232286027
-    ],
-    [-122.39172935485838,
-      37.76630458915842
-    ],
-    [-122.43550300598145,
-      37.75646561597495
-    ],
-    [-122.45378494262697,
-      37.7781096293495
-    ],
-    [-122.43764877319336,
-      37.78645343442073
-    ]
-  ]
-]);
-	
-	 map.addSource('mask', {
-    "type": "geojson",
-    "data": polyMask(mask, bounds)
-  });
-
-  map.addLayer({
-    "id": "zmask",
-    "source": "mask",
-    "type": "fill",
-    "paint": {
-      "fill-color": "white",
-      'fill-opacity': 0.999
-    }
-  });
-	
-	/******************************/
 </script>
+ 
 </body>
 </html>
